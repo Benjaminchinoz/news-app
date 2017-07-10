@@ -13,4 +13,7 @@
     <dimen name="small">16dp</dimen>
     <dimen name="medium">24dp</dimen>
 
+    // Image Size
+    <dimen name="image">80dp</dimen>
+
 </resources>

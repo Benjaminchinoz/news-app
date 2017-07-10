@@ -1,10 +1,18 @@
 package com.example.android.newsapp;
 
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,7 +25,7 @@ public class NewsActivity extends AppCompatActivity {
     private static final String GUARDIAN_API_URL = "https://content.guardianapis.com/search?format=json&show-fields=all&q=art%26design";
     private static final String API_TEST_KEY = "&api-key=test";
     // Adapter for the list of articles
-//    private BookAdapter mAdapter;
+    private ArticleAdapter mAdapter;
     // Constant value for the book loader ID.
     private static final int ARTICLE_LOADER_ID = 11;
 
@@ -33,5 +41,65 @@ public class NewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+
+        // Find a reference to the {@link ListView} in the layout
+        ListView articleListView = (ListView) findViewById(R.id.list);
+
+        // Create a new adapter that takes an empty list of articles as input
+        mAdapter = new ArticleAdapter(this, articleArrayList);
+
+        // Set the adapter on the {@link ListView}
+        // so the list can be populated in the user interface
+        articleListView.setAdapter(mAdapter);
+
+        mNewsImage = (ImageView) findViewById(R.id.news_image);
+
+        // Set a custom message when there are no list items
+        mEmptyTextView = (TextView) findViewById(R.id.empty_view_text);
+        View emptyLayoutView = findViewById(R.id.empty_layout_view);
+        articleListView.setEmptyView(emptyLayoutView);
+
+        mProgressView = (ProgressBar) findViewById(R.id.progress);
+
+        // Set an item click listener on the ListView, which sends an intent to a web browser
+        // to open a website where a user can view the article.
+        articleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // Find the current article that was clicked on
+                Article currentArticle = mAdapter.getItem(position);
+
+                // Convert the String URL into a URI object (to pass into the Intent constructor)
+                Uri articleUri = Uri.parse(currentArticle.getUrl());
+
+                // Create a new intent to view the article URI
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, articleUri);
+
+                // Send the intent to launch a new activity
+                startActivity(websiteIntent);
+            }
+        });
+
+        // Get a reference to the LoaderManager, in order to interact with loaders.
+        LoaderManager loaderManager = getLoaderManager();
+
+        cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        activeNetwork = cm.getActiveNetworkInfo();
+
+        isOnline = activeNetwork != null && activeNetwork.isConnected();
+        if (isOnline && articleArrayList.isEmpty()) {
+
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+//            loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
+            Log.i(LOG_TAG, "Loader on init");
+        } else {
+            mProgressView.setVisibility(View.GONE);
+            mNewsImage.setVisibility(View.GONE);
+            mEmptyTextView.setText(R.string.no_internet);
+        }
+
     }
 }
