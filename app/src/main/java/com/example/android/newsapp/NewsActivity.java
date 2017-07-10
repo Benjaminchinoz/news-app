@@ -4,12 +4,16 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -24,8 +28,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public static final String LOG_TAG = NewsActivity.class.getName();
     // URL for article data from the Guardian News API
-    private static final String GUARDIAN_API_URL = "https://content.guardianapis.com/search?format=json&show-fields=all&q=art%26design";
-    private static final String API_TEST_KEY = "&api-key=test";
+    private static final String GUARDIAN_API_URL = "https://content.guardianapis.com/search?";
+    private static final String API_TEST_KEY = "test";
     // Adapter for the list of articles
     private ArticleAdapter mAdapter;
     // Constant value for the book loader ID.
@@ -110,7 +114,29 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         // Create a new loader for the given URL
         String fullQueryURL = "https://content.guardianapis.com/search?q=artanddesign&format=json&show-fields=all&page-size=20&api-key=test";
         Log.i(LOG_TAG, "Loader on create");
-        return new ArticleLoader(this, fullQueryURL);
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String orderBy = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
+
+        String noOfArticles = sharedPrefs.getString(
+                getString(R.string.settings_page_size_key),
+                getString(R.string.settings_page_size_default));
+
+        Uri baseUri = Uri.parse(GUARDIAN_API_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("q", "artanddesign");
+        uriBuilder.appendQueryParameter("format", "json");
+        uriBuilder.appendQueryParameter("show-fields", "all");
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("page-size", noOfArticles);
+        uriBuilder.appendQueryParameter("api-key", API_TEST_KEY);
+        Log.v(LOG_TAG, uriBuilder.toString());
+
+
+        return new ArticleLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -135,5 +161,22 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         // Loader reset, so we can clear out our existing data.
         Log.i(LOG_TAG, "Loader on reset");
         mAdapter.clear();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
