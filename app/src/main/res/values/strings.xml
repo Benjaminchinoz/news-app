@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">News App</string>
+    <string name="app_name"> Art News</string>
 
     <string name="no_internet">No Connection!</string>
     <string name="no_articles">No Articles!</string>

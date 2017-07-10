@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="horizontal"
     android:paddingEnd="@dimen/xsmall"
     android:paddingLeft="@dimen/xsmall"
     android:paddingRight="@dimen/xsmall"
-    android:paddingStart="@dimen/xsmall"
-    android:background="@android:color/white"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:paddingStart="@dimen/xsmall">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -25,24 +25,48 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small"
             android:ellipsize="end"
-            android:textStyle="bold"
             android:fontFamily="serif"
             android:maxLines="3"
             android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/font_xsmall"
+            android:textStyle="bold"
             tools:text="The Art Book Tradition in Twentieth-century Europe" />
 
-        <TextView
-            android:id="@+id/author_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xsmall"
-            android:layout_marginBottom="@dimen/xsmall"
-            android:layout_gravity="top"
-            android:textColor="@color/secondaryText"
-            android:textSize="@dimen/font_xsmall"
-            tools:text="By Jane Smith" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/author_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginBottom="@dimen/xsmall"
+                android:layout_marginTop="@dimen/xsmall"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/font_xsmall"
+                tools:text="By Jane Smith" />
+
+            <TextView
+                android:id="@+id/date_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginBottom="@dimen/xsmall"
+                android:layout_marginLeft="@dimen/small"
+                android:layout_marginRight="@dimen/small"
+                android:layout_marginTop="@dimen/xsmall"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/font_xsmall"
+                tools:text="10-07-2017" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/subtitle_text"
@@ -59,16 +83,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:layout_marginBottom="@dimen/small"
+            android:layout_marginTop="@dimen/xsmall"
+            android:textAllCaps="true"
             android:textColor="@color/secondaryText"
             android:textSize="@dimen/font_xsmall"
-            android:layout_marginTop="@dimen/xsmall"
-            android:layout_marginBottom="@dimen/small"
             tools:text="Art and Design" />
 
         <View
             android:layout_width="match_parent"
-            android:background="@android:color/darker_gray"
-            android:layout_height="@dimen/divider"/>
+            android:layout_height="@dimen/divider"
+            android:background="@android:color/darker_gray" />
 
     </LinearLayout>
 
@@ -76,19 +101,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:layout_marginLeft="@dimen/small"
-        android:layout_marginStart="@dimen/small"
-        android:layout_marginRight="@dimen/small"
         android:layout_marginEnd="@dimen/small"
+        android:layout_marginLeft="@dimen/small"
+        android:layout_marginRight="@dimen/small"
+        android:layout_marginStart="@dimen/small"
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/firstLetter"
-            android:padding="@dimen/xsmall"
-            android:layout_marginTop="@dimen/small"
-            android:background="@color/colorAccent"
+            android:id="@+id/thumbnail_image"
             android:layout_width="@dimen/image"
-            android:layout_height="@dimen/image" />
+            android:layout_height="@dimen/image"
+            android:layout_marginTop="@dimen/small"
+            android:background="@android:color/darker_gray" />
 
     </LinearLayout>
 

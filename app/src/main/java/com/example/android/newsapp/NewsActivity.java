@@ -3,6 +3,7 @@ package com.example.android.newsapp;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -17,8 +18,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class NewsActivity extends AppCompatActivity {
+public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Article>>{
 
     public static final String LOG_TAG = NewsActivity.class.getName();
     // URL for article data from the Guardian News API
@@ -93,7 +95,7 @@ public class NewsActivity extends AppCompatActivity {
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
-//            loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
+            loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
             Log.i(LOG_TAG, "Loader on init");
         } else {
             mProgressView.setVisibility(View.GONE);
@@ -101,5 +103,37 @@ public class NewsActivity extends AppCompatActivity {
             mEmptyTextView.setText(R.string.no_internet);
         }
 
+    }
+
+    @Override
+    public Loader<List<Article>> onCreateLoader(int id, Bundle args) {
+        // Create a new loader for the given URL
+        String fullQueryURL = "https://content.guardianapis.com/search?q=artanddesign&format=json&show-fields=all&page-size=20&api-key=test";
+        Log.i(LOG_TAG, "Loader on create");
+        return new ArticleLoader(this, fullQueryURL);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Article>> loader, List<Article> articles) {
+
+        // Set empty state text to display "No articles found."
+        mProgressView.setVisibility(View.GONE);
+        mEmptyTextView.setText(R.string.no_articles);
+
+        // Clear the adapter of previous article data
+        mAdapter.clear();
+        Log.i(LOG_TAG, "Loader on finished");
+        // If there is a valid list of {@link Articles}s, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+        if (articles != null && !articles.isEmpty()) {
+            mAdapter.addAll(articles);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Article>> loader) {
+        // Loader reset, so we can clear out our existing data.
+        Log.i(LOG_TAG, "Loader on reset");
+        mAdapter.clear();
     }
 }

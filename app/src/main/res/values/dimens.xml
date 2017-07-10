@@ -9,11 +9,12 @@
     <dimen name="divider">2dp</dimen>
 
     // Padding / Margin
+    <dimen name="xxsmall">2dp</dimen>
     <dimen name="xsmall">8dp</dimen>
     <dimen name="small">16dp</dimen>
     <dimen name="medium">24dp</dimen>
 
     // Image Size
-    <dimen name="image">80dp</dimen>
+    <dimen name="image">90dp</dimen>
 
 </resources>

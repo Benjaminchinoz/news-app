@@ -52,16 +52,11 @@ public class QueryUtils {
             JSONObject baseJsonResponse = new JSONObject(articleJSON);
 
             // Extract the JSONObject associated with the key called "response"
-            JSONObject response = null;
-            if (baseJsonResponse.has("response")) {
-                response = baseJsonResponse.getJSONObject("response");
-            }
+            JSONObject response = baseJsonResponse.getJSONObject("response");
 
             // Extract the JSONArray associated with the key called "results",
             // which represents a list of articles.
-            JSONArray resultsArray = null;
-            if (baseJsonResponse.has("results")) {
-                resultsArray = baseJsonResponse.getJSONArray("results");
+            JSONArray resultsArray = response.getJSONArray("results");
 
                 // For each article in the resultsArray, create an {@link Article} object
                 for (int i = 0; i < resultsArray.length(); i++) {
@@ -105,7 +100,7 @@ public class QueryUtils {
                     }
 
                     // Extract the value for the key called "byline"
-                    String byline = "No Author";
+                    String byline = "Author Unknown";
                     if (fields.has("byline")) {
                         byline = fields.getString("byline");
                     }
@@ -123,7 +118,6 @@ public class QueryUtils {
                     // Add the new {@link Article} to the list of books.
                     articles.add(article);
                 }
-            }
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
