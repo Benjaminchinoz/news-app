@@ -3,7 +3,8 @@
 
     <string name="no_internet">No Connection!</string>
     <string name="no_articles">No Articles Found!</string>
-
+    <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
+    <string name="menu_refresh">Refresh</string>
     <!-- Settings Menu Item [CHAR LIMIT=NONE] -->
     <string name="settings_menu_item">Settings</string>
     <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
