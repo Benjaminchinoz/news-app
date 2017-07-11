@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,7 +35,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     // Constant value for the book loader ID.
     private static final int ARTICLE_LOADER_ID = 11;
 
-    private ImageView mNewsImage;
     private TextView mEmptyTextView;
     private ProgressBar mProgressView;
     private ArrayList<Article> articleArrayList = new ArrayList<>();
@@ -59,8 +57,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         articleListView.setAdapter(mAdapter);
-
-        mNewsImage = (ImageView) findViewById(R.id.news_image);
 
         // Set a custom message when there are no list items
         mEmptyTextView = (TextView) findViewById(R.id.empty_view_text);
@@ -95,8 +91,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
         activeNetwork = cm.getActiveNetworkInfo();
 
-        isOnline = activeNetwork != null && activeNetwork.isConnected();
-        if (isOnline && articleArrayList.isEmpty()) {
+//        isOnline = activeNetwork != null && activeNetwork.isConnected();
+        if (isConnected() && articleArrayList.isEmpty()) {
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
@@ -105,7 +101,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
             Log.i(LOG_TAG, "Loader on init");
         } else {
             mProgressView.setVisibility(View.GONE);
-            mNewsImage.setVisibility(View.GONE);
             mEmptyTextView.setText(R.string.no_internet);
         }
 
@@ -122,6 +117,10 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
                     }
                 }
         );
+    }
+
+    public boolean isConnected(){
+        return activeNetwork != null && activeNetwork.isConnected();
     }
 
     public void refreshView(){
@@ -157,7 +156,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         uriBuilder.appendQueryParameter("api-key", API_TEST_KEY);
         Log.v(LOG_TAG, uriBuilder.toString());
 
-        return new ArticleLoader(this, uriBuilder.toString());
+//        return new ArticleLoader(this, uriBuilder.toString());
+        return new ArticleLoader(this, "");
     }
 
     @Override
@@ -166,17 +166,26 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         // Finish refreshing
         mSwipeRefresh.setRefreshing(false);
         // Set empty state text to display "No articles found."
-        mProgressView.setVisibility(View.GONE);
-        mEmptyTextView.setText(R.string.no_articles);
+//        mProgressView.setVisibility(View.GONE);
+//        mEmptyTextView.setText(R.string.no_articles);
 
         // Clear the adapter of previous article data
         mAdapter.clear();
-        Log.i(LOG_TAG, "Loader on finished");
-        // If there is a valid list of {@link Articles}s, then add them to the adapter's
-        // data set. This will trigger the ListView to update.
-        if (articles != null && !articles.isEmpty()) {
-            mAdapter.addAll(articles);
+
+        if(!isConnected()) {
+            mProgressView.setVisibility(View.GONE);
+            mEmptyTextView.setText(R.string.no_internet);
+        } else {
+            // If there is a valid list of {@link Articles}s, then add them to the adapter's
+            // data set. This will trigger the ListView to update.
+            if (articles != null && !articles.isEmpty()) {
+                mAdapter.addAll(articles);
+            } else {
+                mProgressView.setVisibility(View.GONE);
+                mEmptyTextView.setText(R.string.no_articles);
+            }
         }
+        Log.i(LOG_TAG, "Loader on finished");
     }
 
     @Override

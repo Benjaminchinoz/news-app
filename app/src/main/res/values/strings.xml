@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name"> Art News</string>
 
+    <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
     <string name="no_internet">No Connection!</string>
+    <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
     <string name="no_articles">No Articles Found!</string>
     <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
     <string name="menu_refresh">Refresh</string>

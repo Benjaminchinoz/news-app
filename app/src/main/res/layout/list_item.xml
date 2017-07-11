@@ -40,31 +40,17 @@
 
             <TextView
                 android:id="@+id/author_text"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:layout_marginBottom="@dimen/xsmall"
                 android:layout_marginTop="@dimen/xsmall"
-                android:layout_weight="1"
-                android:gravity="left"
+                android:gravity="start"
                 android:textColor="@color/secondaryText"
                 android:textSize="@dimen/font_xsmall"
                 tools:text="By Jane Smith" />
-
-            <TextView
-                android:id="@+id/date_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginBottom="@dimen/xsmall"
-                android:layout_marginLeft="@dimen/small"
-                android:layout_marginRight="@dimen/small"
-                android:layout_marginTop="@dimen/xsmall"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/secondaryText"
-                android:textSize="@dimen/font_xsmall"
-                tools:text="10-07-2017" />
 
         </LinearLayout>
 
@@ -78,17 +64,39 @@
             android:textSize="@dimen/font_small"
             tools:text="Exploring various ways in which a range of twentieth-century European artists and writers challenged the boundary between visual and linguistic expression in the content, production and physical form of books, these essays challenge the" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
         <TextView
             android:id="@+id/category_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
+            android:layout_gravity="top"
             android:layout_marginBottom="@dimen/small"
             android:layout_marginTop="@dimen/xsmall"
             android:textAllCaps="true"
             android:textColor="@color/secondaryText"
-            android:textSize="@dimen/font_xsmall"
+            android:textSize="@dimen/font_xxsmall"
             tools:text="Art and Design" />
+
+            <TextView
+                android:id="@+id/date_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginBottom="@dimen/xsmall"
+                android:layout_marginLeft="@dimen/small"
+                android:layout_marginRight="@dimen/small"
+                android:layout_marginTop="@dimen/xsmall"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/font_xxsmall"
+                tools:text="10-07-2017" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
