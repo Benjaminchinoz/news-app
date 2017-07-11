@@ -38,6 +38,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView mEmptyTextView;
     private ProgressBar mProgressView;
     private ArrayList<Article> articleArrayList = new ArrayList<>();
+    LoaderManager loaderManager;
     ConnectivityManager cm;
     NetworkInfo activeNetwork;
     boolean isOnline;
@@ -85,7 +86,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
-        LoaderManager loaderManager = getLoaderManager();
+        loaderManager = getLoaderManager();
 
         cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -119,8 +120,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         );
     }
 
-    public boolean isConnected(){
-        return activeNetwork != null && activeNetwork.isConnected();
+    private boolean isConnected(){
+        LoaderManager loaderManager2 = getLoaderManager();
+        ConnectivityManager cm2  = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork2 = cm2.getActiveNetworkInfo();
+        return activeNetwork2 != null && activeNetwork2.isConnected();
     }
 
     public void refreshView(){
