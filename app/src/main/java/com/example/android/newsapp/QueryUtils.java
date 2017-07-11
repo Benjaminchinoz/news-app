@@ -58,66 +58,66 @@ public class QueryUtils {
             // which represents a list of articles.
             JSONArray resultsArray = response.getJSONArray("results");
 
-                // For each article in the resultsArray, create an {@link Article} object
-                for (int i = 0; i < resultsArray.length(); i++) {
+            // For each article in the resultsArray, create an {@link Article} object
+            for (int i = 0; i < resultsArray.length(); i++) {
 
-                    // Get a single article at position i within the list of articles
-                    JSONObject currentArticle = resultsArray.getJSONObject(i);
+                // Get a single article at position i within the list of articles
+                JSONObject currentArticle = resultsArray.getJSONObject(i);
 
-                    // Extract the value for the key called "sectionName"
-                    String sectionName = "No Category";
-                    if (currentArticle.has("sectionName")) {
-                        sectionName = currentArticle.getString("sectionName");
-                    }
-
-                    // Extract the value for the key called "webUrl"
-                    String webUrl = "https://theguardian.com";
-                    if (currentArticle.has("webUrl")) {
-                        webUrl = currentArticle.getString("webUrl");
-                    }
-
-                    // Extract the value for the key called "webPublicationDate"
-                    String webPublicationDate = "No Date";
-                    if (currentArticle.has("webPublicationDate")) {
-                        webPublicationDate = currentArticle.getString("webPublicationDate");
-                    }
-
-                    // For a given article, extract the JSONObject associated with the
-                    // key called "fields", which represents a list of fields
-                    // for that article.
-                    JSONObject fields = currentArticle.getJSONObject("fields");
-
-                    // Extract the value for the key called "headline"
-                    String headline = "No Title";
-                    if (fields.has("headline")) {
-                        headline = fields.getString("headline");
-                    }
-
-                    // Extract the value for the key called "trailText / subtitle"
-                    String trailText = "No Subtitle";
-                    if (fields.has("trailText")) {
-                        trailText = fields.getString("trailText");
-                    }
-
-                    // Extract the value for the key called "byline"
-                    String byline = "Author Unknown";
-                    if (fields.has("byline")) {
-                        byline = fields.getString("byline");
-                    }
-
-                    // Extract the value for the key called "thumbnail"
-                    String thumbnail = "";
-                    if (fields.has("thumbnail")) {
-                        thumbnail = fields.getString("thumbnail");
-                    }
-
-                    // Create a new {@link Article} object with the title, subtitle, author, date, category, thumbnail
-                    // and url from the JSON response.
-                    Article article = new Article(sectionName, webUrl, webPublicationDate, headline, trailText, byline, thumbnail);
-
-                    // Add the new {@link Article} to the list of books.
-                    articles.add(article);
+                // Extract the value for the key called "sectionName"
+                String sectionName = "No Category";
+                if (currentArticle.has("sectionName")) {
+                    sectionName = currentArticle.getString("sectionName");
                 }
+
+                // Extract the value for the key called "webUrl"
+                String webUrl = "https://theguardian.com";
+                if (currentArticle.has("webUrl")) {
+                    webUrl = currentArticle.getString("webUrl");
+                }
+
+                // Extract the value for the key called "webPublicationDate"
+                String webPublicationDate = "No Date";
+                if (currentArticle.has("webPublicationDate")) {
+                    webPublicationDate = currentArticle.getString("webPublicationDate");
+                }
+
+                // For a given article, extract the JSONObject associated with the
+                // key called "fields", which represents a list of fields
+                // for that article.
+                JSONObject fields = currentArticle.getJSONObject("fields");
+
+                // Extract the value for the key called "headline"
+                String headline = "No Title";
+                if (fields.has("headline")) {
+                    headline = fields.getString("headline");
+                }
+
+                // Extract the value for the key called "trailText / subtitle"
+                String trailText = "No Subtitle";
+                if (fields.has("trailText")) {
+                    trailText = fields.getString("trailText");
+                }
+
+                // Extract the value for the key called "byline"
+                String byline = "Author Unknown";
+                if (fields.has("byline")) {
+                    byline = fields.getString("byline");
+                }
+
+                // Extract the value for the key called "thumbnail"
+                String thumbnail = "";
+                if (fields.has("thumbnail")) {
+                    thumbnail = fields.getString("thumbnail");
+                }
+
+                // Create a new {@link Article} object with the title, subtitle, author, date, category, thumbnail
+                // and url from the JSON response.
+                Article article = new Article(sectionName, webUrl, webPublicationDate, headline, trailText, byline, thumbnail);
+
+                // Add the new {@link Article} to the list of books.
+                articles.add(article);
+            }
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
@@ -172,7 +172,7 @@ public class QueryUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the book JSON results.", e);
+            Log.e(LOG_TAG, "Problem retrieving the article JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
