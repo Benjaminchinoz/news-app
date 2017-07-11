@@ -38,10 +38,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView mEmptyTextView;
     private ProgressBar mProgressView;
     private ArrayList<Article> articleArrayList = new ArrayList<>();
-    LoaderManager loaderManager;
     ConnectivityManager cm;
     NetworkInfo activeNetwork;
-    boolean isOnline;
     private SwipeRefreshLayout mSwipeRefresh;
 
     @Override
@@ -86,14 +84,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
-        loaderManager = getLoaderManager();
+        LoaderManager loaderManager = getLoaderManager();
 
         cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         activeNetwork = cm.getActiveNetworkInfo();
 
-//        isOnline = activeNetwork != null && activeNetwork.isConnected();
-        if (isConnected() && articleArrayList.isEmpty()) {
+        if (isConnected()) {
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
@@ -112,9 +109,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
                     @Override
                     public void onRefresh() {
                         Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
-                        if (isOnline) {
                             refreshView();
-                        }
                     }
                 }
         );
@@ -160,8 +155,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         uriBuilder.appendQueryParameter("api-key", API_TEST_KEY);
         Log.v(LOG_TAG, uriBuilder.toString());
 
-//        return new ArticleLoader(this, uriBuilder.toString());
-        return new ArticleLoader(this, "");
+        return new ArticleLoader(this, uriBuilder.toString());
+//        return new ArticleLoader(this, "");
     }
 
     @Override
@@ -169,14 +164,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Finish refreshing
         mSwipeRefresh.setRefreshing(false);
-        // Set empty state text to display "No articles found."
-//        mProgressView.setVisibility(View.GONE);
-//        mEmptyTextView.setText(R.string.no_articles);
-
         // Clear the adapter of previous article data
         mAdapter.clear();
 
         if(!isConnected()) {
+            // Set empty state text to display "No connection."
             mProgressView.setVisibility(View.GONE);
             mEmptyTextView.setText(R.string.no_internet);
         } else {
@@ -185,11 +177,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
             if (articles != null && !articles.isEmpty()) {
                 mAdapter.addAll(articles);
             } else {
+                // Set empty state text to display "No articles found."
                 mProgressView.setVisibility(View.GONE);
                 mEmptyTextView.setText(R.string.no_articles);
             }
         }
         Log.i(LOG_TAG, "Loader on finished");
+
     }
 
     @Override
